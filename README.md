@@ -1,21 +1,17 @@
 # Diagramas RAS — acuicultura de recirculación
 
-Colección de diagramas explicativos interactivos sobre sistemas de recirculación
-en acuicultura (RAS), generados con [Archify](https://github.com/tt-a1i/archify)
-y publicados como HTML autocontenido (un solo archivo, sin dependencias).
+Dos diagramas explicativos interactivos sobre sistemas de recirculación en
+acuicultura (RAS), generados con [Archify](https://github.com/tt-a1i/archify) y
+publicados como HTML autocontenido: un solo archivo, sin dependencias, que se
+abre en cualquier móvil y se exporta a PNG o PDF.
 
-**Sitio publicado:** https://geodesiasur.github.io/ras-intensivo/
-
-## Diagramas
-
-| # | Diagrama | Página | Fuente |
-|---|---|---|---|
-| 1 | Sistema RAS intensivo · bucle de recirculación y calidad de agua | [`/`](https://geodesiasur.github.io/ras-intensivo/) | `ras-intensivo.candidate.json` |
-| 2 | Cálculo RAS (V2.0) · cómo la app convierte tus datos en un dictamen hidráulico | [`/ras-v2/`](https://geodesiasur.github.io/ras-intensivo/ras-v2/) | `ras-v2/calculo-ras-v2.candidate.json` |
+### 🔗 https://geodesiasur.github.io/ras-intensivo/
 
 ---
 
 ## 1 · Sistema RAS intensivo
+
+[![Sistema RAS intensivo: bucle de recirculación y calidad de agua](docs/diagrama-ras-intensivo.png)](https://geodesiasur.github.io/ras-intensivo/)
 
 Diagrama del bucle de recirculación y las fronteras de calidad de agua de un
 sistema de acuicultura intensiva.
@@ -31,7 +27,13 @@ sistema de acuicultura intensiva.
 
 Los valores son referencias típicas de RAS, no mediciones de una instalación real.
 
+**▶ [Abrir el diagrama interactivo](https://geodesiasur.github.io/ras-intensivo/)**
+
+---
+
 ## 2 · Cálculo RAS (V2.0)
+
+[![Cálculo RAS (V2.0): cómo la app convierte tus datos en un dictamen hidráulico](docs/diagrama-calculo-ras-v2.png)](https://geodesiasur.github.io/ras-intensivo/ras-v2/)
 
 Diagrama de la aplicación de dimensionamiento
 [Cálculo RAS (V2.0)](https://calculo-ras-v2-0.ai.studio/), del
@@ -47,6 +49,8 @@ Ing. en Acuicultura José Ernesto Muñoz Núñez.
 
 Cifras del escenario guía **Salmón Engorda Estándar** incluido en la app, no
 mediciones de una instalación real.
+
+**▶ [Abrir el diagrama interactivo](https://geodesiasur.github.io/ras-intensivo/ras-v2/)**
 
 ---
 
@@ -68,6 +72,7 @@ mediciones de una instalación real.
 - `ras-intensivo.candidate.json` — fuente editable del diagrama 1.
 - `ras-v2/index.html` — diagrama 2, autocontenido.
 - `ras-v2/calculo-ras-v2.candidate.json` — fuente editable del diagrama 2.
+- `docs/` — capturas usadas como portada en este README.
 - `.nojekyll` — evita el procesado de Jekyll en GitHub Pages.
 
 ## Regenerar un diagrama
