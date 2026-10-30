@@ -1,0 +1,133 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Sistema RAS intensivo · bucle de recirculación y calidad de agua",
+    "locale": "es",
+    "output": ".archify/workflow-ras-intensivo-20261030-172035/ras-intensivo.html",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "hidden",
+      "entries": {
+        "backend": { "label": "unidad de proceso" },
+        "external": { "label": "entradas y salidas" },
+        "security": { "label": "instrumentación y control" },
+        "messagebus": { "label": "residuos y purgas" }
+      }
+    },
+    "views": [
+      { "id": "bucle", "label": "Bucle primario", "focus": ["pond", "drum", "mbbr", "degas", "uvheat", "lho"], "note": "95–99 % del caudal vuelve al estanque" },
+      { "id": "nitri", "label": "Nitrificación", "focus": ["mbbr"], "note": "Amonio a nitrito y nitrito a nitrato" },
+      { "id": "iot", "label": "Lazo de control", "focus": ["sensors", "plc", "lho"], "note": "Sondas, alarmas y consigna de O₂" }
+    ]
+  },
+  "lanes": [
+    { "id": "entradas", "label": "Entradas al sistema" },
+    { "id": "control", "label": "Control e IoT" },
+    { "id": "proceso", "label": "Bucle primario de recirculación · 95–99 % del caudal" },
+    { "id": "residuos", "label": "Efluentes y purgas" }
+  ],
+  "phases": [
+    { "id": "solidos", "label": "Retiro de sólidos", "fromCol": 0, "toCol": 1 },
+    { "id": "nitrificacion", "label": "Nitrificación", "fromCol": 2, "toCol": 2, "variant": "emphasis" },
+    { "id": "acondicionamiento", "label": "Gas, luz y calor", "fromCol": 3, "toCol": 4, "variant": "dashed" },
+    { "id": "oxigenacion", "label": "Oxigenación y retorno", "fromCol": 5, "toCol": 5, "variant": "emphasis" }
+  ],
+  "groups": [
+    { "id": "lazo_control", "label": "Lazo de control", "lane": "control", "fromCol": 2, "toCol": 4, "variant": "security" }
+  ],
+  "mainPath": ["pond", "drum", "mbbr", "degas", "uvheat", "lho"],
+  "semanticChecks": {
+    "allowedRoots": ["feed", "makeup"],
+    "allowedTerminals": ["effluent", "co2"],
+    "requiredEdges": [
+      { "from": "lho", "to": "pond" },
+      { "from": "drum", "to": "sludge" },
+      { "from": "degas", "to": "co2" }
+    ]
+  },
+  "nodes": [
+    { "id": "feed", "lane": "entradas", "col": 0, "type": "external", "label": "Alimento", "sublabel": "ración diaria", "width": 96 },
+    { "id": "makeup", "lane": "entradas", "col": 5, "type": "external", "label": "Agua de reposición", "sublabel": "make-up 1–5 %", "width": 124 },
+    { "id": "sensors", "lane": "control", "col": 2, "type": "security", "label": "Sondas en línea", "sublabel": "OD · pH · T · NH₄⁺", "width": 100 },
+    { "id": "plc", "lane": "control", "col": 4, "type": "security", "label": "PLC + Dashboard", "sublabel": "alarmas y consignas", "width": 100 },
+    { "id": "pond", "lane": "proceso", "col": 0, "type": "backend", "label": "Estanque de cultivo", "sublabel": "peces · biomasa", "tag": "OD > 80 % sat", "width": 128 },
+    { "id": "drum", "lane": "proceso", "col": 1, "type": "backend", "label": "Filtro de tambor", "sublabel": "sólidos > 40 µm", "tag": "purga de lodos", "width": 108 },
+    { "id": "mbbr", "lane": "proceso", "col": 2, "type": "backend", "label": "Biofiltro MBBR", "sublabel": "lecho móvil", "tag": "TAN < 1 mg/L", "width": 96 },
+    { "id": "degas", "lane": "proceso", "col": 3, "type": "backend", "label": "Torre de stripping", "sublabel": "CO₂ por aireación", "tag": "CO₂ < 10–15 mg/L", "width": 124 },
+    { "id": "uvheat", "lane": "proceso", "col": 4, "type": "backend", "label": "UV + bomba de calor", "sublabel": "patógenos · temperatura", "tag": "T 12–18 °C", "width": 128 },
+    { "id": "lho", "lane": "proceso", "col": 5, "type": "backend", "label": "Cono de oxígeno", "sublabel": "O₂ puro a presión", "tag": "OD > 80 % sat", "width": 100 },
+    { "id": "sludge", "lane": "residuos", "col": 1, "type": "messagebus", "label": "Purga de lodos", "sublabel": "sólidos retenidos", "width": 96 },
+    { "id": "effluent", "lane": "residuos", "col": 2, "type": "external", "label": "Tratamiento de efluentes", "sublabel": "lodos + agua de purga", "width": 164 },
+    { "id": "co2", "lane": "residuos", "col": 3, "type": "external", "label": "Venteo de CO₂", "sublabel": "a la atmósfera", "width": 96 }
+  ],
+  "edges": [
+    { "id": "alimento", "from": "feed", "to": "pond", "variant": "default" },
+    { "id": "reposicion", "from": "makeup", "to": "lho", "label": "make-up 1–5 %", "variant": "dashed" },
+    { "id": "salida-estanque", "from": "pond", "to": "drum", "label": "sólidos + TAN", "variant": "default", "role": "main" },
+    { "id": "clarificada", "from": "drum", "to": "mbbr", "label": "agua clarificada", "variant": "default", "role": "main" },
+    { "id": "nitrificada", "from": "mbbr", "to": "degas", "label": "nitrato + CO₂", "variant": "emphasis", "role": "main" },
+    { "id": "desgasificada", "from": "degas", "to": "uvheat", "label": "CO₂ removido", "variant": "emphasis", "role": "main" },
+    { "id": "desinfectada", "from": "uvheat", "to": "lho", "label": "agua desinfectada", "variant": "emphasis", "role": "main" },
+    { "id": "retorno", "from": "lho", "to": "pond", "label": "retorno 95–99 %", "variant": "emphasis", "role": "return", "fromSide": "bottom", "toSide": "left", "via": [[1112.8, 600], [30, 600], [30, 372]] },
+    { "id": "purga", "from": "drum", "to": "sludge", "variant": "dashed", "role": "branch" },
+    { "id": "lodos", "from": "sludge", "to": "effluent", "label": "lodos", "variant": "dashed", "role": "branch" },
+    { "id": "venteo", "from": "degas", "to": "co2", "variant": "dashed", "role": "branch" },
+    { "id": "muestra", "from": "mbbr", "to": "sensors", "label": "muestra", "variant": "security", "role": "branch" },
+    { "id": "alertas", "from": "sensors", "to": "plc", "label": "alertas cada 60 s", "variant": "security", "role": "branch" },
+    { "id": "consigna", "from": "plc", "to": "lho", "label": "consigna O₂", "variant": "security", "role": "branch" }
+  ],
+  "cards": [
+    {
+      "dot": "slate",
+      "title": "Cómo leer los flujos",
+      "items": [
+        "Línea resaltada: agua ya nitrificada y tratada, del biofiltro al retorno",
+        "Línea fina: agua con carga orgánica y alimento",
+        "Línea punteada: residuos, purgas y agua de reposición",
+        "Línea de control: señal de sondas y consignas del PLC"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Parámetros críticos",
+      "items": [
+        "Oxígeno disuelto > 80 % de saturación (5–6 mg/L mínimo)",
+        "CO₂ disuelto < 10–15 mg/L tras el stripping",
+        "TAN < 1 mg/L y nitrito < 0.2 mg/L",
+        "Temperatura 12–18 °C y pH 6.5–8.0",
+        "Sólidos suspendidos < 20 mg/L tras el filtro de tambor"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Bucle y balance hídrico",
+      "items": [
+        "95–99 % del caudal recircula por el tren de tratamiento",
+        "Agua de reposición (make-up) 1–5 % del volumen por día",
+        "La purga de lodos retira el 3–8 % del caudal",
+        "La reposición compensa purga, evaporación y salpicaduras"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Nitrificación en dos etapas",
+      "items": [
+        "Nitrosomonas: NH₄⁺ → NO₂⁻ (requiere OD > 4 mg/L)",
+        "Nitrobacter: NO₂⁻ → NO₃⁻ (más lenta y sensible)",
+        "El consumo de alcalinidad baja el pH: se dosifica bicarbonato",
+        "Si falla la segunda etapa se acumula nitrito tóxico"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Control e IoT",
+      "items": [
+        "Sondas de OD, pH, temperatura y amonio cada 60 s",
+        "Alarma si OD < 60 % sat, TAN > 1 mg/L o T fuera de rango",
+        "El PLC ajusta válvula de O₂, purga y ración de alimento",
+        "Histórico y tablero para trazabilidad del lote"
+      ]
+    }
+  ]
+}
