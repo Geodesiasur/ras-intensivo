@@ -1,0 +1,394 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cálculo RAS (V2.0) · cómo la app convierte tus datos en un dictamen hidráulico",
+    "locale": "es",
+    "subtitle": "Una fila por pestaña · columna 1: lo que escribes · columna 2: lo que calcula · columna 3: lo que entrega",
+    "output": ".archify/workflow-calculo-ras-v2-20261030-181859/calculo-ras-v2.html",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "datos que escribes tú"
+        },
+        "backend": {
+          "label": "cálculo automático"
+        },
+        "security": {
+          "label": "criterio de diseño"
+        },
+        "database": {
+          "label": "documento entregable"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "cascada",
+        "label": "Cascada de cálculo",
+        "focus": [
+          "c_tanque",
+          "c_tan",
+          "c_bio",
+          "c_sst",
+          "c_o2",
+          "dictamen"
+        ],
+        "note": "La columna central: cada paso reutiliza el resultado del anterior"
+      },
+      {
+        "id": "entradas",
+        "label": "Lo que tú escribes",
+        "focus": [
+          "e_tanque",
+          "e_tan",
+          "e_bio",
+          "e_sst",
+          "e_o2"
+        ],
+        "note": "Los únicos datos manuales del modelo"
+      },
+      {
+        "id": "dictamen",
+        "label": "Dictamen hidráulico",
+        "focus": [
+          "c_tan",
+          "c_sst",
+          "c_o2",
+          "dictamen",
+          "recambio",
+          "reporte"
+        ],
+        "note": "El caudal mayor dimensiona bomba y oxigenación"
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "tanque",
+      "label": "Tanque y biomasa"
+    },
+    {
+      "id": "tan",
+      "label": "Balance de TAN"
+    },
+    {
+      "id": "bio",
+      "label": "Biofiltro MBBR"
+    },
+    {
+      "id": "sst",
+      "label": "Sólidos y tambor"
+    },
+    {
+      "id": "o2",
+      "label": "Oxígeno"
+    },
+    {
+      "id": "flujo",
+      "label": "Esquema y flujo"
+    }
+  ],
+  "phases": [
+    {
+      "id": "tuyos",
+      "label": "Tú escribes",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "calcula",
+      "label": "La app calcula",
+      "fromCol": 2,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "entrega",
+      "label": "La app entrega",
+      "fromCol": 4,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "c_tanque",
+    "c_tan",
+    "c_bio",
+    "c_sst",
+    "c_o2",
+    "dictamen"
+  ],
+  "semanticChecks": {
+    "allowedRoots": [
+      "e_tanque",
+      "e_tan",
+      "e_bio",
+      "e_sst",
+      "e_o2"
+    ],
+    "allowedTerminals": [
+      "recambio",
+      "reporte"
+    ],
+    "requiredEdges": [
+      {
+        "from": "c_o2",
+        "to": "dictamen"
+      },
+      {
+        "from": "c_tan",
+        "to": "recambio"
+      },
+      {
+        "from": "dictamen",
+        "to": "reporte"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "e_tanque",
+      "lane": "tanque",
+      "col": 0,
+      "type": "external",
+      "label": "Geometría y carga",
+      "sublabel": "Ø · altura · nº de peces · peso"
+    },
+    {
+      "id": "c_tanque",
+      "lane": "tanque",
+      "col": 2,
+      "type": "backend",
+      "label": "Biomasa y volumen",
+      "sublabel": "12.018 kg · 200,3 m³ · 60 kg/m³",
+      "tag": "alimento 180,3 kg/día"
+    },
+    {
+      "id": "e_tan",
+      "lane": "tan",
+      "col": 0,
+      "type": "external",
+      "label": "Dieta y límites",
+      "sublabel": "% proteína · TAN objetivo"
+    },
+    {
+      "id": "c_tan",
+      "lane": "tan",
+      "col": 2,
+      "type": "backend",
+      "label": "Balance de masa TAN",
+      "sublabel": "4,68 kg TAN/día",
+      "tag": "Q 3.252 L/min"
+    },
+    {
+      "id": "e_bio",
+      "lane": "bio",
+      "col": 0,
+      "type": "external",
+      "label": "Medio filtrante",
+      "sublabel": "SSA · tasa · precio · altura"
+    },
+    {
+      "id": "c_bio",
+      "lane": "bio",
+      "col": 2,
+      "type": "backend",
+      "label": "Biofiltro MBBR",
+      "sublabel": "58,5 m³ · Ø 6,72 × 1,65 m",
+      "tag": "SSA requerida"
+    },
+    {
+      "id": "e_sst",
+      "lane": "sst",
+      "col": 0,
+      "type": "external",
+      "label": "Sólidos y purga",
+      "sublabel": "% desecho · SST · tamiz"
+    },
+    {
+      "id": "c_sst",
+      "lane": "sst",
+      "col": 2,
+      "type": "backend",
+      "label": "Balance de sólidos",
+      "sublabel": "44,3 kg SST/día",
+      "tag": "Q 2.460 L/min"
+    },
+    {
+      "id": "e_o2",
+      "lane": "o2",
+      "col": 0,
+      "type": "external",
+      "label": "Oxígeno y demanda",
+      "sublabel": "kg O₂/kg TAN · respiración"
+    },
+    {
+      "id": "c_o2",
+      "lane": "o2",
+      "col": 2,
+      "type": "backend",
+      "label": "Demanda de oxígeno",
+      "sublabel": "77,9 kg O₂/día",
+      "tag": "Q 7.727 L/min"
+    },
+    {
+      "id": "dictamen",
+      "lane": "flujo",
+      "col": 2,
+      "type": "security",
+      "label": "Caudal gobernante",
+      "sublabel": "463,6 m³/h · 2,31 rev/h",
+      "tag": "máx. O₂ · TAN · SST"
+    },
+    {
+      "id": "recambio",
+      "lane": "tan",
+      "col": 4,
+      "type": "external",
+      "label": "Agua nueva",
+      "sublabel": "31.637 L/d · 15,8 %/día"
+    },
+    {
+      "id": "reporte",
+      "lane": "flujo",
+      "col": 4,
+      "type": "database",
+      "label": "Reporte técnico",
+      "sublabel": "paso a paso + hoja completa"
+    }
+  ],
+  "edges": [
+    {
+      "id": "in_tanque",
+      "from": "e_tanque",
+      "to": "c_tanque",
+      "variant": "default",
+      "role": "main"
+    },
+    {
+      "id": "in_tan",
+      "from": "e_tan",
+      "to": "c_tan",
+      "variant": "default",
+      "role": "main"
+    },
+    {
+      "id": "in_bio",
+      "from": "e_bio",
+      "to": "c_bio",
+      "variant": "default",
+      "role": "main"
+    },
+    {
+      "id": "in_sst",
+      "from": "e_sst",
+      "to": "c_sst",
+      "variant": "default",
+      "role": "main"
+    },
+    {
+      "id": "in_o2",
+      "from": "e_o2",
+      "to": "c_o2",
+      "variant": "default",
+      "role": "main"
+    },
+    {
+      "id": "paso1",
+      "from": "c_tanque",
+      "to": "c_tan",
+      "variant": "emphasis",
+      "role": "main"
+    },
+    {
+      "id": "paso2",
+      "from": "c_tan",
+      "to": "c_bio",
+      "variant": "emphasis",
+      "role": "main"
+    },
+    {
+      "id": "paso3",
+      "from": "c_bio",
+      "to": "c_sst",
+      "variant": "emphasis",
+      "role": "main"
+    },
+    {
+      "id": "paso4",
+      "from": "c_sst",
+      "to": "c_o2",
+      "variant": "emphasis",
+      "role": "main"
+    },
+    {
+      "id": "paso5",
+      "from": "c_o2",
+      "to": "dictamen",
+      "variant": "emphasis",
+      "role": "main"
+    },
+    {
+      "id": "recambio_agua",
+      "from": "c_tan",
+      "to": "recambio",
+      "label": "nitratos",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "informe",
+      "from": "dictamen",
+      "to": "reporte",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "slate",
+      "title": "Cómo leer el diagrama",
+      "items": [
+        "Cada fila es una pestaña de la app, en el mismo orden en que la recorres",
+        "Columna izquierda: los pocos datos que escribes tú (amarillo en la app)",
+        "Columna central: lo que la app calcula sola (azul en la app)",
+        "La línea gruesa que baja por el centro es la cascada: cada paso usa el resultado del anterior",
+        "Columna derecha: lo que la app entrega al terminar"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Escenario base · Salmón Engorda Estándar",
+      "items": [
+        "Biomasa 12.018 kg en 200,3 m³ (densidad 60 kg/m³)",
+        "Alimento 180,3 kg/día: 1,5 % de la biomasa con 45 % de proteína",
+        "Producción de TAN 4,68 kg/día (regla de Timmons)",
+        "Agua nueva 31.637 L/día, equivalente al 15,8 % del estanque por día"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Tres caudales, un solo ganador",
+      "items": [
+        "Caudal por amonio (TAN): 3.252 L/min",
+        "Caudal por sólidos (SST): 2.460 L/min",
+        "Caudal por oxígeno: 7.727 L/min ★",
+        "Gana el mayor: 463,6 m³/h y 2,31 renovaciones/hora",
+        "Ese caudal dimensiona bomba, biofiltro y oxigenación"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Reglas de cálculo que aplica la app",
+      "items": [
+        "Timmons: 0,065 kg de TAN por kg de proteína del alimento",
+        "Oxígeno: 4,57 kg O₂ por kg de TAN + respiración basal",
+        "Filtro de tambor: malla de 40–60 µm; retiene los sólidos más gruesos",
+        "Biofiltro: se dimensiona por tasa de TAN por m² de medio y SSA",
+        "Los 4 escenarios precargados cambian biomasa, densidad y especie"
+      ]
+    }
+  ]
+}
