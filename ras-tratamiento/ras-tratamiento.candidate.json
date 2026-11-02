@@ -3,6 +3,7 @@
   "diagram_type": "workflow",
   "meta": {
     "title": "Sistema RAS intensivo · tren de tratamiento",
+    "subtitle": "Preparado por Ingeniero en Acuicultura José Ernesto Muñoz N.",
     "locale": "es",
     "output": ".archify/workflow-ras-tratamiento-20261102-115203/ras-tratamiento.html",
     "quality_profile": "showcase",
