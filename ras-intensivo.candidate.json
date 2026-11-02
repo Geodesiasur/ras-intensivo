@@ -3,8 +3,9 @@
   "diagram_type": "workflow",
   "meta": {
     "title": "Sistema RAS intensivo · bucle de recirculación y calidad de agua",
+    "subtitle": "Preparado por Ingeniero en Acuicultura José Ernesto Muñoz N.",
     "locale": "es",
-    "output": ".archify/workflow-ras-intensivo-20261030-172035/ras-intensivo.html",
+    "output": "index.html",
     "quality_profile": "showcase",
     "legend": {
       "mode": "hidden",

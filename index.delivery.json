@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "7c5e2185-00ea-445a-904c-e08add89e1be",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "C:\\Users\\56982\\Documents\\OPEN-CODE\\ras-intensivo-github\\ras-intensivo.candidate.json",
+  "output": "C:\\Users\\56982\\Documents\\OPEN-CODE\\ras-intensivo-github\\index.html",
+  "specification": {
+    "sha256": "06951ffbf88225d156bbbef8e69948143eb94e0f682fe0389ceff2dc80253561",
+    "bytes": 7960
+  },
+  "artifact": {
+    "sha256": "fef05f437c3e26e87ac9c05847b5c69227e195e9f5b956b22c30ef2a97337acf",
+    "bytes": 858287
+  }
+}
