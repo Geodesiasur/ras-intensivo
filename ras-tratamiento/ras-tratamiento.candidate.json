@@ -1,0 +1,108 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Sistema RAS intensivo · tren de tratamiento",
+    "locale": "es",
+    "output": ".archify/workflow-ras-tratamiento-20261102-115203/ras-tratamiento.html",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "frontend": { "label": "Cultivo · tanques" },
+        "backend": { "label": "Equipo de tratamiento" },
+        "security": { "label": "Barrera sanitaria" },
+        "external": { "label": "Aporte y residuos" }
+      }
+    }
+  },
+  "lanes": [
+    { "id": "insumos", "label": "Aportes" },
+    { "id": "cultivo", "label": "Cultivo" },
+    { "id": "mecanico", "label": "Filtración mecánica y lodos" },
+    { "id": "biologico", "label": "Biofiltración" },
+    { "id": "gases", "label": "Gases y oxigenación" },
+    { "id": "pulido", "label": "Pulido y desinfección" },
+    { "id": "retorno", "label": "Retorno y bombeo" }
+  ],
+  "phases": [
+    { "id": "f_cap", "label": "Cultivo y captación", "fromCol": 0, "toCol": 1 },
+    { "id": "f_trat", "label": "Tratamiento del agua", "fromCol": 2, "toCol": 4, "variant": "emphasis" },
+    { "id": "f_ret", "label": "Retorno al tanque", "fromCol": 5, "toCol": 5 }
+  ],
+  "groups": [
+    { "id": "g_gases", "label": "Acondicionamiento de gases", "lane": "gases", "fromCol": 3, "toCol": 4 },
+    { "id": "g_lodos", "label": "Manejo de lodos", "lane": "mecanico", "fromCol": 3, "toCol": 4, "variant": "dashed" }
+  ],
+  "mainPath": ["tanque", "drenaje", "tambor", "mbbr", "torre", "lho", "skimmer", "uv", "bomba"],
+  "nodes": [
+    { "id": "agua_nueva", "lane": "insumos", "col": 0, "type": "external", "label": "Agua de reposición", "sublabel": "make-up 1–5 %/día", "icon": "start" },
+    { "id": "oxigeno", "lane": "insumos", "col": 4, "type": "external", "label": "Aporte de O₂", "sublabel": "LOX · cono venturi", "icon": "start" },
+
+    { "id": "tanque", "lane": "cultivo", "col": 0, "type": "frontend", "label": "Tanques de cultivo", "sublabel": "FRP/HDPE · giro del agua", "icon": "start" },
+    { "id": "drenaje", "lane": "cultivo", "col": 1, "type": "frontend", "label": "Doble drenaje Cornell", "sublabel": "salida de pared + fondo", "icon": "neutral" },
+
+    { "id": "tambor", "lane": "mecanico", "col": 2, "type": "backend", "label": "Filtro de tambor", "sublabel": "microtamiz 40–60 µm", "tag": "inox", "icon": "active" },
+
+    { "id": "mbbr", "lane": "biologico", "col": 3, "type": "backend", "label": "Biofiltro MBBR", "sublabel": "media plástica · SSA alta", "tag": "aireación", "icon": "active" },
+
+    { "id": "torre", "lane": "gases", "col": 3, "type": "backend", "label": "Torre de degasificación", "sublabel": "CO₂ < 10–15 mg/L", "icon": "active" },
+    { "id": "lho", "lane": "gases", "col": 4, "type": "backend", "label": "LHO · oxigenador", "sublabel": "OD 90–100 % sat", "tag": "inox", "icon": "active" },
+
+    { "id": "skimmer", "lane": "pulido", "col": 4, "type": "backend", "label": "Skimmer de espuma", "sublabel": "proteínas y finos", "icon": "active" },
+    { "id": "uv", "lane": "pulido", "col": 5, "type": "security", "label": "UV inox", "sublabel": "barrera microbiológica", "icon": "security" },
+
+    { "id": "bomba", "lane": "retorno", "col": 5, "type": "backend", "label": "Bomba de retorno", "sublabel": "95–99 % del caudal", "tag": "bucle", "icon": "active" },
+
+    { "id": "lodos", "lane": "mecanico", "col": 3, "type": "external", "label": "Canal de lodos", "sublabel": "sólidos concentrados", "tag": "purga", "icon": "stop" },
+    { "id": "efluente", "lane": "mecanico", "col": 4, "type": "external", "label": "Efluente", "sublabel": "deshidratación y salida", "icon": "stop" }
+  ],
+  "edges": [
+    { "from": "agua_nueva", "to": "tanque", "label": "make-up", "role": "branch", "fromSide": "bottom", "toSide": "top" },
+    { "from": "oxigeno", "to": "lho", "label": "O₂", "role": "branch", "fromSide": "bottom", "toSide": "top" },
+
+    { "from": "tanque", "to": "drenaje", "label": "agua de cultivo", "variant": "emphasis" },
+    { "from": "drenaje", "to": "tambor", "label": "salida de pared", "route": "drop", "fromSide": "bottom", "toSide": "top" },
+    { "from": "tambor", "to": "mbbr", "label": "agua filtrada" },
+    { "from": "tambor", "to": "lodos", "label": "lodos", "variant": "dashed", "role": "branch", "fromSide": "right", "toSide": "left" },
+
+    { "from": "mbbr", "to": "torre", "label": "agua nitrificada" },
+    { "from": "torre", "to": "lho", "label": "CO₂ despojado", "variant": "emphasis" },
+    { "from": "lho", "to": "skimmer", "label": "agua oxigenada", "fromSide": "bottom", "toSide": "top" },
+
+    { "from": "skimmer", "to": "uv", "label": "finos retirados" },
+    { "from": "uv", "to": "bomba", "label": "agua desinfectada", "fromSide": "bottom", "toSide": "top" },
+    { "from": "lodos", "to": "efluente", "label": "deshidratación", "variant": "dashed" },
+
+    { "from": "bomba", "to": "tanque", "label": "retorno · 95–99 %", "variant": "emphasis", "role": "return", "route": "return-left", "fromSide": "left", "toSide": "left" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Un solo bucle de agua",
+      "items": [
+        "El 95–99 % del caudal recircula por el tren de tratamiento",
+        "La reposición repone solo 1–5 % del volumen al día",
+        "Cada etapa se dimensiona con el caudal que entrega la anterior"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Qué retira cada etapa",
+      "items": [
+        "Tambor: sólidos de 40–60 µm y lodos concentrados",
+        "MBBR: amonio y nitrito por biopelícula nitrificante",
+        "Torre: CO₂ disuelto · LHO: oxígeno hasta saturación",
+        "UV: carga microbiana antes de volver al tanque"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Cómo leerlo",
+      "items": [
+        "Las cifras son rangos típicos de RAS, no una instalación medida",
+        "El orden exacto de pulido y oxigenación varía según el diseño",
+        "El color indica la familia del componente, no el caudal"
+      ]
+    }
+  ]
+}

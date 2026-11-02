@@ -1,6 +1,6 @@
 # Diagramas RAS — acuicultura de recirculación
 
-Dos diagramas explicativos interactivos sobre sistemas de recirculación en
+Tres diagramas explicativos interactivos sobre sistemas de recirculación en
 acuicultura (RAS), generados con [Archify](https://github.com/tt-a1i/archify) y
 publicados como HTML autocontenido: un solo archivo, sin dependencias, que se
 abre en cualquier móvil y se exporta a PNG o PDF.
@@ -54,6 +54,33 @@ mediciones de una instalación real.
 
 ---
 
+## 3 · Tren de tratamiento (RAS intensivo)
+
+[![Tren de tratamiento RAS: del tanque de cultivo al retorno](docs/diagrama-ras-tratamiento.png)](https://geodesiasur.github.io/ras-intensivo/ras-tratamiento/)
+
+Diagrama de flujo del agua en una planta RAS intensiva: siete zonas en carril y
+el proceso avanzando de izquierda a derecha, etapa por etapa.
+
+- Cultivo en tanques FRP/HDPE con giro del agua y doble drenaje Cornell
+  (salida de pared + fondo).
+- Filtración mecánica: tambor de microtamiz 40–60 µm que descarga los sólidos
+  al canal de lodos y de ahí a efluente.
+- Biofiltración MBBR con media plástica de alta superficie específica y
+  aireación intensa.
+- Gases: torre de degasificación de CO₂ (10–15 mg/L) y LHO + conos venturi
+  hasta 90–100 % de saturación de oxígeno.
+- Pulido: skimmer de espuma (proteínas y finos) y UV inox como barrera
+  microbiológica.
+- Cierre del bucle: bomba de retorno con el 95–99 % del caudal; reposición de
+  agua nueva 1–5 %/día.
+
+El orden exacto de pulido y oxigenación varía según el diseño; el color indica
+la familia del componente, no el caudal. Las cifras son rangos típicos de RAS.
+
+**▶ [Abrir el diagrama interactivo](https://geodesiasur.github.io/ras-intensivo/ras-tratamiento/)**
+
+---
+
 ## Uso del visor
 
 | Tecla | Acción |
@@ -72,6 +99,8 @@ mediciones de una instalación real.
 - `ras-intensivo.candidate.json` — fuente editable del diagrama 1.
 - `ras-v2/index.html` — diagrama 2, autocontenido.
 - `ras-v2/calculo-ras-v2.candidate.json` — fuente editable del diagrama 2.
+- `ras-tratamiento/index.html` — diagrama 3, autocontenido.
+- `ras-tratamiento/ras-tratamiento.candidate.json` — fuente editable del diagrama 3.
 - `docs/` — capturas usadas como portada en este README.
 - `.nojekyll` — evita el procesado de Jekyll en GitHub Pages.
 
